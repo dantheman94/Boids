@@ -1,0 +1,48 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+static const int threadGroupSize = 1024;
+
+struct Boid {
+
+	float3 position;
+	float3 direction;
+
+	float3 flockHeading;
+	float3 flockCenter;
+	float3 separationHeading;
+	int flockSize;
+};
+
+RWStructuredBuffer<Boid> boids;
+int numBoids;
+float viewRadius;
+float avoidRadius;
+
+[numthreads(threadGroupSize, 1, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	for (unsigned int iB = 0; iB < numBoids; iB++)
+	{
+		if (id.x != iB)
+		{
+			// Go through each boid and get the distance frmo eachother
+			Boid boidB = boids[iB];
+			float3 offset = boidB.position - boids[id.x].position;
+			float sqrDst = (offset.x * offset.x) + (offset.y * offset.y) + (offset.z * offset.z);
+
+			// Close enough to perform flocking action?
+			if (sqrDst < viewRadius * viewRadius)
+			{
+				boids[id.x].flockSize += 1;
+				boids[id.x].flockHeading += boidB.direction;
+				boids[id.x].flockCenter += boidB.position;
+
+				// Boid separation
+				if (sqrDst < avoidRadius * avoidRadius)
+				{
+					boids[id.x].separationHeading -= offset / sqrDst;
+				}
+			}
+		}
+	}
+}
