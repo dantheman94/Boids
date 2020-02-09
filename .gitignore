@@ -1,0 +1,36 @@
+
+### Unity ###
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Aa]uto[Bb]uild/
+
+.vscode/
+.vs/
+
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.userprefs
+*.app
+.idea/
+*.VC.*
+.DS_Store
+*~
+*.swp
+
+*.log
+*.pyc
+
+### Boids Project ###
+Flocking Boids/Library/ShaderCache/
+Flocking Boids/Temp/
+Flocking Boids/Library/ScriptAssemblies/
+Flocking Boids/Library/metadata/
+Flocking Boids/Library/
+Flocking Boids/Build/
+Flocking Boids/obj/Debug/
+Flocking Boids/Logs/
